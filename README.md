@@ -4,12 +4,12 @@ run instruction:
 
 1. create db in postgres;
 2. add properties to application.config
-    server.port=
-    db.host=
-    db.port=
-    db.name=
-    db.username=
-    db.password=
+    server.port=<br>
+    db.host=<br>
+    db.port=<br>
+    db.name=<br>
+    db.username=<br>
+    db.password=<br>
   
 3. install maven
 4. execute command: mvn spring-boot:run
