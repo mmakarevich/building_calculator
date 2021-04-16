@@ -72,7 +72,7 @@ public class ElementService {
                     .collect(Collectors.toList());
         }
 
-        return result;
+       return result != null ? result.get(0) : null;
     }
 
 }
