@@ -20,7 +20,7 @@ public class ElementResource {
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Object> calculateAttributeValues(@RequestBody CalculatingInputModel calculatingInputModel) {
         log.info("calculateAttributeValues() - call; {}", calculatingInputModel);
-        if (calculatingInputModel.getId() == null || calculatingInputModel.getProp() == null || calculatingInputModel.getProp().isBlank()) {
+        if (calculatingInputModel.getTreeId() == null || calculatingInputModel.getProp() == null || calculatingInputModel.getProp().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(elementService.calculate(calculatingInputModel));

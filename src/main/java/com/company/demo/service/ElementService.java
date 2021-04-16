@@ -23,7 +23,7 @@ public class ElementService {
     public Object calculate(CalculatingInputModel calculatingInputModel) {
         log.info("calculate() - call; {}", calculatingInputModel);
 
-        var id = calculatingInputModel.getId();
+        var id = calculatingInputModel.getTreeId();
         var attributeName = calculatingInputModel.getProp();
 
         List<ElementProjection> elementProjections = elementRepository.getAllByTreeId(id);

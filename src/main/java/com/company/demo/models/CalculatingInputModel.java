@@ -1,5 +1,6 @@
 package com.company.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CalculatingInputModel {
-    private Long id;
+    @JsonProperty("tree_id")
+    private Long treeId;
     private String prop;
 }
