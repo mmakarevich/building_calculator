@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class ElementService {
         var id = calculatingInputModel.getTreeId();
         var attributeName = calculatingInputModel.getProp();
 
-        List<ElementProjection> elementProjections = elementRepository.getAllByTreeId(id);
+        var elementProjections = elementRepository.getAllByTreeId(id);
 
         int maxLevel = elementProjections.stream().map(ElementProjection::getLevel).max(Integer::compareTo).orElse(0);
 
@@ -46,25 +47,26 @@ public class ElementService {
                         cv.setProp(attributeName);
                         cv.setId(e.getId());
 
+                        var valueSelf = attributes.stream()
+                                .filter(a -> a.getElementId().equals(e.getId()))
+                                .map(AttributeProjection::getAttrValue)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        cv.setValue(valueSelf);
+
                         if (cml == null) {
-                            cv.setItems(cml);
-                            var value = attributes.stream()
-                                    .filter(a -> a.getElementId().equals(e.getId()))
-                                    .map(AttributeProjection::getAttrValue)
-                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-                            cv.setValue(value);
+                            cv.setItems(new ArrayList<>(0));
                         } else {
                             var children = cml.stream()
                                     .filter(c -> c.getParentId().equals(e.getId()))
                                     .collect(Collectors.toList());
 
                             cv.setItems(children);
-                            var value = children
+                            var valueChildren = children
                                     .stream()
                                     .map(CalculatedValuesModel::getValue)
                                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                            cv.setValue(value);
+                            cv.setValue(cv.getValue().add(valueChildren));
 
                         }
                         return cv;
